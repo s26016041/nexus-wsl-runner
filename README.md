@@ -23,7 +23,7 @@ curl https://cli.nexus.xyz/
 
 ## 2. 使用流程
 
-1.下載 Releases 最新版 .exe 檔 
+1.下載 Releases 最新版 .exe 檔   
 2.到網站找你得 7 位數密碼: `https://app.nexus.xyz/nodes`  
 3.輸入 CLI     
 4.輸入 wsl 中 nexus-network 路徑 which (不知道的話請在 wsl 輸入 which 
