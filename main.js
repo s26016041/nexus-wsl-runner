@@ -1,7 +1,8 @@
 const { exec } = require("child_process");
 const readline = require('readline');
 
-network_addres = ''
+network_address = ''
+restartIntervalMinutes = 0
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -19,26 +20,42 @@ function ask(question) {
 }
 
 async function runOnce(cli) {
-  // 開新視窗執行 nexus-network
-  exec(`cmd.exe /c start cmd.exe /k "wsl ${network_addres} start --node-id ${cli}; exec bash"`);
+  exec(`cmd.exe /c start cmd.exe /k "wsl ${network_address} start --node-id ${cli}; exec bash"`);
 
-  await sleep(10 * 60 * 1000); // 10 分鐘 = 10 x 60秒 x 1000毫秒
+  await sleep(restartIntervalMinutes * 60 * 1000);
 
-  // 關閉所有 cmd.exe
   exec('cmd.exe /c taskkill /F /IM cmd.exe /T')
 }
 
 async function run(cli) {
   while (true) {
     await runOnce(cli);
-    await sleep(1000); // 每輪之間再等 1 秒（可視需要調整）
+    await sleep(1000);
   }
 }
 
+async function GeyNetworkAddress() {
+  return new Promise((resolve, reject) => {
+    exec('wsl bash -ic "which nexus-network"', { cwd: "C:\\Windows" }, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`❌ 錯誤: ${error.message}`);
+        return reject(error);
+      }
+      if (stderr && stderr.trim()) {
+        console.error(`⚠️ 錯誤輸出: ${stderr}`);
+        return reject(stderr);
+      }
+
+      resolve(stdout.trim());
+    });
+  });
+}
 
 async function main() {
   const cli = await ask('請輸入你的CLI：');
-  network_addres = await ask('請輸入你的 nexus-network 路徑(不知道的話請在 wsl 輸入 which nexus-network)：');
+  restartIntervalMinutes = await ask('你希望幾分鐘重啟 CMD ：');
+
+  network_address = await GeyNetworkAddress()
   console.log('正在執行請勿關閉 ......')
 
   await sleep(1000);
