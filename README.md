@@ -15,16 +15,19 @@
 
 ---
 
-## 1. 在 WSL 中安裝 CLI 工具
+## 在 WSL 中安裝 CLI 工具
 
 ```bash
 curl https://cli.nexus.xyz/ 
 ```
 
-## 2. 使用流程
+## 使用流程
 
 1.下載 Releases 最新版 .exe 檔   
-2.到網站找你得 7 位數密碼: `https://app.nexus.xyz/nodes`  
-3.輸入密碼和想要的重啟時間
+2.到網站找你得 7 位數密碼: `https://app.nexus.xyz/nodes`    
+3.輸入密碼和想要的重啟時間  
+
+## 截圖
 ![alt text](image.png)
+
 
